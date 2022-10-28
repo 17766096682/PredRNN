@@ -75,8 +75,8 @@ def test(model, test_input_handle, configs, itr):
                 gx = img_out[:, i, :]
                 gx = np.maximum(gx, 0)
                 gx = np.minimum(gx, 1)
-                mse = np.square(x - gx).sum()/batch_size
-                mae = np.abs(x - gx).sum()/batch_size
+                mse = np.square(x - gx).sum() / batch_size
+                mae = np.abs(x - gx).sum() / batch_size
                 psnr = 0
                 t1 = torch.from_numpy((x - 0.5) / 0.5).to(configs.device)
                 t1 = t1.permute((0, 3, 1, 2))
@@ -114,8 +114,10 @@ def test(model, test_input_handle, configs, itr):
                 ssim[i] += score
                 ssim_list = score
                 avg_ssim += score
-            f.writelines(str(batch_id) + ',' + str(psnr_list) + ',' + str(mse_list) + ',' +str(mae_list) + ','+ str(lpips_list) + ',' + str(
-                ssim_list) + '\n')
+            f.writelines(
+                str(batch_id) + '\n' + ',psnr' + str(psnr_list) + '\n' + ',mse' + str(mse_list) + '\n' + ',mae' + str(
+                    mae_list) + '\n' + ',lpips' + str(
+                    lpips_list) + '\n' + ',ssim' + str(ssim_list) + '\n')
             res_width = configs.img_width
             res_height = configs.img_height
             img = np.ones((2 * res_height,
@@ -141,7 +143,7 @@ def test(model, test_input_handle, configs, itr):
         for i in range(configs.total_length - configs.input_length):
             print(img_mse[i] / batch_id)
             img_mse[i] = img_mse[i] / batch_id
-        data_write.writelines(str(avg_mse) + '\n')
+        data_write.writelines('mse per frame: ' +str(avg_mse) + '\n')
         data_write.writelines(str(img_mse) + '\n')
 
         avg_mae = avg_mae / (batch_id * output_length)
@@ -149,7 +151,7 @@ def test(model, test_input_handle, configs, itr):
         for i in range(configs.total_length - configs.input_length):
             print(img_mae[i] / batch_id)
             img_mae[i] = img_mae[i] / batch_id
-        data_write.writelines(str(avg_mae) + '\n')
+        data_write.writelines('mae per frame: ' +str(avg_mae) + '\n')
         data_write.writelines(str(img_mae) + '\n')
 
         avg_psnr = avg_psnr / (batch_id * output_length)
@@ -157,7 +159,7 @@ def test(model, test_input_handle, configs, itr):
         for i in range(configs.total_length - configs.input_length):
             print(img_psnr[i] / batch_id)
             img_psnr[i] = img_psnr[i] / batch_id
-        data_write.writelines(str(avg_psnr) + '\n')
+        data_write.writelines('psnr per frame: ' + str(avg_psnr) + '\n')
         data_write.writelines(str(img_psnr) + '\n')
 
         avg_ssim = avg_ssim / (batch_id * output_length)
@@ -165,7 +167,7 @@ def test(model, test_input_handle, configs, itr):
         for i in range(configs.total_length - configs.input_length):
             print(ssim[i] / batch_id)
             ssim[i] = ssim[i] / batch_id
-        data_write.writelines(str(avg_ssim) + '\n')
+        data_write.writelines('ssim per frame: ' + str(avg_ssim) + '\n')
         data_write.writelines(str(ssim) + '\n')
 
         avg_lpips = avg_lpips / (batch_id * output_length)
@@ -173,5 +175,5 @@ def test(model, test_input_handle, configs, itr):
         for i in range(configs.total_length - configs.input_length):
             print(img_lpips[i] / batch_id)
             img_lpips[i] = img_lpips[i] / batch_id
-        data_write.writelines(str(avg_lpips) + '\n')
+        data_write.writelines('lpips per frame: ' + str(avg_lpips) + '\n')
         data_write.writelines(str(img_lpips) + '\n')
