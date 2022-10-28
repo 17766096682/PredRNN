@@ -112,7 +112,7 @@ def test(model, test_input_handle, configs, itr):
                     score += compare_ssim(x[b, :], gx[b, :], multichannel=True)
                 score /= batch_size
                 ssim[i] += score
-                ssim_list = score
+                ssim_list[i] = score
                 avg_ssim += score
             f.writelines(
                 str(batch_id) + '\n' + ',psnr' + str(psnr_list) + '\n' + ',mse' + str(mse_list) + '\n' + ',mae' + str(
